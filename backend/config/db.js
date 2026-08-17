@@ -1,33 +1,43 @@
 import mongoose from 'mongoose';
 
-export async function connectDB() {
-  const uri = process.env.MONGO_URI;
+const cached = globalThis._mongooseCache ?? (globalThis._mongooseCache = { conn: null, promise: null });
 
+mongoose.connection.on('connected', () => {
+  console.log(`MongoDB connected: ${mongoose.connection.host}/${mongoose.connection.name}`);
+});
+
+mongoose.connection.on('error', (err) => {
+  console.error(`MongoDB connection error: ${err.message}`);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.warn('MongoDB disconnected');
+});
+
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
+
+  const uri = process.env.MONGO_URI;
   if (!uri) {
-    console.error('MONGO_URI is not set in the environment. Copy .env.example to .env and configure it.');
-    process.exit(1);
+    throw new Error('MONGO_URI is not set in the environment. Copy .env.example to .env and configure it.');
   }
 
-  mongoose.connection.on('connected', () => {
-    console.log(`MongoDB connected: ${mongoose.connection.host}/${mongoose.connection.name}`);
-  });
-
-  mongoose.connection.on('error', (err) => {
-    console.error(`MongoDB connection error: ${err.message}`);
-  });
-
-  mongoose.connection.on('disconnected', () => {
-    console.warn('MongoDB disconnected');
-  });
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(uri);
+  }
 
   try {
-    await mongoose.connect(uri);
+    cached.conn = await cached.promise;
   } catch (err) {
-    console.error(`Failed to connect to MongoDB: ${err.message}`);
-    process.exit(1);
+    cached.promise = null;
+    throw err;
   }
+
+  return cached.conn;
 }
 
 export async function disconnectDB() {
   await mongoose.disconnect();
+  cached.conn = null;
+  cached.promise = null;
 }
