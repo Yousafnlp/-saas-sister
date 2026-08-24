@@ -98,6 +98,12 @@ export default function Clients() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const number = formData.number.trim();
+    if (number && clients.some((client) => client.id !== editingId && client.number.trim() === number)) {
+      toast.error('A client with this number already exists');
+      return;
+    }
+
     try {
       if (editingId) {
         const res = await api.put<ClientResponse>(`/clients/${editingId}`, formData);

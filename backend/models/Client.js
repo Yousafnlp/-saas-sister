@@ -48,6 +48,10 @@ const clientSchema = new mongoose.Schema(
 );
 
 clientSchema.index({ name: 'text', concern: 'text', number: 'text' });
+clientSchema.index(
+  { number: 1 },
+  { unique: true, partialFilterExpression: { number: { $type: 'string', $ne: '' } } }
+);
 clientSchema.plugin(toJSON);
 
 export default mongoose.model('Client', clientSchema);
