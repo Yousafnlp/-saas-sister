@@ -6,14 +6,26 @@ import Link from 'next/link';
 import { api, ApiError } from '@/lib/api';
 import { toDateOnly } from '@/lib/date-utils';
 import type { Client } from '@/components/pages/clients/sheet';
+import type { Bill } from '@/components/pages/billing/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Calendar, ClipboardList, User } from 'lucide-react';
+import { StatusBadge, type StatusTone } from '@/components/status-badge';
+import { ArrowLeft, Calendar, ClipboardList, Phone, Printer, User } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 interface ClientResponse {
   success: boolean;
   data: Client;
 }
+
+interface BillListResponse {
+  success: boolean;
+  data: Bill[];
+}
+
+const PAYMENT_STATUS_TONE: Record<string, StatusTone> = {
+  Paid: 'success',
+  Pending: 'danger',
+};
 
 function Field({ icon: Icon, label, value }: { icon?: LucideIcon; label: string; value: string }) {
   return (
@@ -35,6 +47,8 @@ export default function ClientDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [client, setClient] = useState<Client | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'not-found' | 'error'>('loading');
+  const [bills, setBills] = useState<Bill[]>([]);
+  const [billsLoading, setBillsLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -45,6 +59,22 @@ export default function ClientDetailPage() {
         if (cancelled) return;
         setClient({ ...res.data, date: toDateOnly(res.data.date), nextVisit: toDateOnly(res.data.nextVisit) });
         setStatus('ready');
+
+        if (res.data.number) {
+          api
+            .get<BillListResponse>(`/bills?clientNumber=${encodeURIComponent(res.data.number)}`)
+            .then((billRes) => {
+              if (!cancelled) setBills(billRes.data);
+            })
+            .catch(() => {
+              if (!cancelled) setBills([]);
+            })
+            .finally(() => {
+              if (!cancelled) setBillsLoading(false);
+            });
+        } else {
+          setBillsLoading(false);
+        }
       })
       .catch((err) => {
         if (cancelled) return;
@@ -113,6 +143,7 @@ export default function ClientDetailPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <Field icon={Phone} label="Number" value={client!.number || '—'} />
             <Field icon={Calendar} label="Date" value={client!.date} />
             <Field icon={User} label="Age" value={String(client!.age)} />
             <Field icon={User} label="Gender" value={client!.gender} />
@@ -120,7 +151,58 @@ export default function ClientDetailPage() {
             <div className="sm:col-span-2">
               <Field icon={ClipboardList} label="Concern" value={client!.concern || '—'} />
             </div>
+            <div className="sm:col-span-2">
+              <Field icon={ClipboardList} label="Treatment Plan" value={client!.treatmentPlan || '—'} />
+            </div>
+            <div className="sm:col-span-2">
+              <Field icon={ClipboardList} label="Treatment History" value={client!.treatmentHistory || '—'} />
+            </div>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Bills */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Bills</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {billsLoading ? (
+            <p className="text-sm text-muted-foreground">Loading bills...</p>
+          ) : bills.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              {client!.number ? 'No bills found for this client.' : 'Add a phone number to this client to match bills.'}
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {bills.map((bill) => (
+                <div
+                  key={bill.id}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border p-3"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-foreground">{bill.invoiceNumber}</p>
+                    <p className="truncate text-xs text-muted-foreground">{toDateOnly(bill.date)}</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold tabular-nums text-foreground">
+                      Rs {bill.total.toLocaleString()}
+                    </span>
+                    <StatusBadge label={bill.paymentStatus} tone={PAYMENT_STATUS_TONE[bill.paymentStatus] ?? 'neutral'} />
+                    <Link
+                      href={`/billing/${bill.id}/print`}
+                      target="_blank"
+                      className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      aria-label={`Print bill ${bill.invoiceNumber}`}
+                      title={`Print bill ${bill.invoiceNumber}`}
+                    >
+                      <Printer className="size-4" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

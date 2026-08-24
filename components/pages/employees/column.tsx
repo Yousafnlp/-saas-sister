@@ -17,7 +17,7 @@ export function getEmployeeColumns({ onEdit, onDelete }: EmployeeColumnsProps): 
       key: 'salary',
       label: 'Salary',
       hideBelow: 'lg',
-      render: (value: number) => `$${value.toLocaleString()}`,
+      render: (value: number) => `Rs ${value.toLocaleString()}`,
     },
     { key: 'joinDate', label: 'Join Date', hideBelow: 'lg' },
     {

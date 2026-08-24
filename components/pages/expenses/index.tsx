@@ -6,6 +6,7 @@ import { api, ApiError } from '@/lib/api';
 import { toDateOnly } from '@/lib/date-utils';
 import DataTable from '@/components/data-table';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PageHeader } from '@/components/page-header';
 import { StatCard } from '@/components/stat-card';
 import { Plus, Receipt, CheckCircle, Clock } from 'lucide-react';
@@ -96,24 +97,30 @@ export default function Expenses() {
       <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-4 shadow-sm md:flex-row md:items-center md:justify-between md:p-6">
         <label className="font-semibold text-foreground">Filter By</label>
         <div className="flex gap-3 w-full md:w-auto">
-          <select
+          <Select
             value={selectedMonth || 'thisWeek'}
-            onChange={(e) => {
-              if (e.target.value === 'thisWeek') {
+            onValueChange={(value) => {
+              if (value === 'thisWeek') {
                 setFilterType('thisWeek');
                 setSelectedMonth(null);
               } else {
                 setFilterType('month');
-                setSelectedMonth(e.target.value);
+                setSelectedMonth(value);
               }
             }}
-            className="flex-1 md:flex-none rounded-lg border border-input bg-transparent h-9 px-3 text-sm text-foreground shadow-xs focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
           >
-            <option value="thisWeek">This Week</option>
-            {months.map(month => (
-              <option key={month} value={month}>{month}</option>
-            ))}
-          </select>
+            <SelectTrigger className="flex-1 md:flex-none">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="thisWeek">This Week</SelectItem>
+              {months.map((month) => (
+                <SelectItem key={month} value={month}>
+                  {month}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Button
             className="bg-primary hover:bg-primary/90 text-white gap-2"
             onClick={() => setShowDrawer(true)}
@@ -125,9 +132,9 @@ export default function Expenses() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard icon={Receipt} label="Total Expenses" value={`$${totalExpenses.toLocaleString()}`} tone="primary" />
-        <StatCard icon={CheckCircle} label="Approved" value={`$${approvedExpenses.toLocaleString()}`} tone="success" />
-        <StatCard icon={Clock} label="Pending Review" value={`$${pendingExpenses.toLocaleString()}`} tone="warning" />
+        <StatCard icon={Receipt} label="Total Expenses" value={`Rs ${totalExpenses.toLocaleString()}`} tone="primary" />
+        <StatCard icon={CheckCircle} label="Approved" value={`Rs ${approvedExpenses.toLocaleString()}`} tone="success" />
+        <StatCard icon={Clock} label="Pending Review" value={`Rs ${pendingExpenses.toLocaleString()}`} tone="warning" />
       </div>
 
       {/* Table */}

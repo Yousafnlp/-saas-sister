@@ -1,22 +1,24 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { StatusBadge, type StatusTone } from '@/components/status-badge';
+import { type StatusTone } from '@/components/status-badge';
+import { StatusSelect } from '@/components/status-select';
 import { DataTableColumn } from '@/components/data-table';
+import { BILLING_PAYMENT_STATUS_OPTIONS } from '@/lib/select-options';
 import { Trash2, Edit, Printer } from 'lucide-react';
 import type { Bill } from './types';
 
 const STATUS_TONE: Record<string, StatusTone> = {
   Paid: 'success',
-  Partial: 'warning',
   Pending: 'danger',
 };
 
 interface BillColumnsProps {
   onEdit: (bill: Bill) => void;
   onDelete: (id: string) => void;
+  onStatusChange: (bill: Bill, status: string) => void;
 }
 
-export function getBillColumns({ onEdit, onDelete }: BillColumnsProps): DataTableColumn<Bill>[] {
+export function getBillColumns({ onEdit, onDelete, onStatusChange }: BillColumnsProps): DataTableColumn<Bill>[] {
   return [
     { key: 'invoiceNumber', label: 'Invoice #', cellClassName: 'font-medium text-foreground whitespace-nowrap' },
     { key: 'clientName', label: 'Client', cellClassName: 'font-medium text-foreground' },
@@ -32,7 +34,30 @@ export function getBillColumns({ onEdit, onDelete }: BillColumnsProps): DataTabl
       key: 'paymentStatus',
       label: 'Status',
       hideBelow: 'md',
-      render: (value: string) => <StatusBadge label={value} tone={STATUS_TONE[value] ?? 'neutral'} />,
+      render: (value: string, bill) => (
+        <StatusSelect
+          value={value}
+          options={BILLING_PAYMENT_STATUS_OPTIONS}
+          toneMap={STATUS_TONE}
+          onChange={(status) => onStatusChange(bill, status)}
+          aria-label={`Update payment status for ${bill.clientName}`}
+        />
+      ),
+    },
+    {
+      key: 'amountPaid',
+      label: 'Paid / Due',
+      align: 'right',
+      hideBelow: 'lg',
+      render: (_value, bill) => {
+        const due = Math.max(bill.total - bill.amountPaid, 0);
+        return (
+          <div className="text-xs leading-tight">
+            <p className="tabular-nums text-success">Paid: Rs {bill.amountPaid.toLocaleString()}</p>
+            {due > 0 && <p className="tabular-nums text-destructive">Due: Rs {due.toLocaleString()}</p>}
+          </div>
+        );
+      },
     },
     {
       key: 'actions',

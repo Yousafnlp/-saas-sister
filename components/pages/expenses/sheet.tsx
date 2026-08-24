@@ -2,11 +2,15 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import FormSelect from '@/components/form-select';
+import { DatePicker } from '@/components/date-picker';
 import { X } from 'lucide-react';
+import { CITY_OPTIONS, EXPENSE_CATEGORY_OPTIONS } from '@/lib/select-options';
 
 export interface ExpenseFormData {
   date: string;
   category: string;
+  city: string;
   amount: number;
   description: string;
   submittedBy: string;
@@ -14,7 +18,8 @@ export interface ExpenseFormData {
 
 export const emptyExpense: ExpenseFormData = {
   date: '',
-  category: '',
+  category: EXPENSE_CATEGORY_OPTIONS[0],
+  city: CITY_OPTIONS[0],
   amount: 0,
   description: '',
   submittedBy: '',
@@ -54,28 +59,22 @@ export function ExpenseFormSheet({ open, onOpenChange, formData, onFormDataChang
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Date</label>
-              <Input
-                type="date"
-                value={formData.date}
-                onChange={(e) => onFormDataChange({ ...formData, date: e.target.value })}
-              />
+              <DatePicker value={formData.date} onChange={(value) => onFormDataChange({ ...formData, date: value })} />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">Category</label>
-              <select
-                value={formData.category}
-                onChange={(e) => onFormDataChange({ ...formData, category: e.target.value })}
-                className="w-full rounded-lg border border-input bg-transparent h-9 px-3 text-sm text-foreground shadow-xs focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
-              >
-                <option value="">Select category</option>
-                <option>Travel</option>
-                <option>Meals</option>
-                <option>Office Supplies</option>
-                <option>Equipment</option>
-                <option>Other</option>
-              </select>
-            </div>
+            <FormSelect
+              label="Category"
+              value={formData.category}
+              onChange={(value) => onFormDataChange({ ...formData, category: value })}
+              options={EXPENSE_CATEGORY_OPTIONS}
+            />
+
+            <FormSelect
+              label="City"
+              value={formData.city}
+              onChange={(value) => onFormDataChange({ ...formData, city: value })}
+              options={CITY_OPTIONS}
+            />
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Amount</label>

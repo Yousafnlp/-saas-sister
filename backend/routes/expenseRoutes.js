@@ -15,10 +15,12 @@ const router = Router();
 const idParam = param('id').isMongoId().withMessage('Invalid expense id');
 
 const CATEGORIES = ['Travel', 'Meals', 'Office Supplies', 'Equipment', 'Software', 'Other'];
+const CITIES = ['Lahore', 'Islamabad', 'Karachi', 'Sialkot'];
 
 const fieldRules = (optional) => [
   body('date')[optional ? 'optional' : 'exists']().isISO8601().withMessage('date must be a valid date'),
   body('category')[optional ? 'optional' : 'exists']().isIn(CATEGORIES).withMessage('Invalid category'),
+  body('city')[optional ? 'optional' : 'exists']().isIn(CITIES).withMessage('Invalid city'),
   body('amount')[optional ? 'optional' : 'exists']()
     .isFloat({ min: 0 })
     .withMessage('Amount must be a non-negative number'),

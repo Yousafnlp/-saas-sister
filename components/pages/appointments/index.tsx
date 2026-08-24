@@ -14,7 +14,7 @@ import { getAppointmentColumns } from './column';
 
 export default function Appointments() {
   const router = useRouter();
-  const { appointments, isLoading, removeAppointment } = useAppointments();
+  const { appointments, isLoading, removeAppointment, updateAppointmentStatus } = useAppointments();
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredAppointments = appointments
@@ -36,7 +36,18 @@ export default function Appointments() {
     }
   };
 
-  const columns = getAppointmentColumns({ onDelete: handleDelete });
+  const handleStatusChange = async (id: string, status: string) => {
+    try {
+      await updateAppointmentStatus(id, status);
+      toast.success(
+        status === 'Completed' ? 'Appointment completed — client added to Clients' : `Status updated to ${status}`,
+      );
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : 'Failed to update status');
+    }
+  };
+
+  const columns = getAppointmentColumns({ onDelete: handleDelete, onStatusChange: handleStatusChange });
 
   return (
     <div className="min-h-screen space-y-6 bg-background p-4 md:p-8">

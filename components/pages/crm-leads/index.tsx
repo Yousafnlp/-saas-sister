@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { api, ApiError } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PageHeader } from '@/components/page-header';
 import DataTable from '@/components/data-table';
 import { LEAD_CATEGORY_OPTIONS } from '@/lib/select-options';
@@ -160,16 +161,19 @@ export default function CRMLeads() {
       {/* Filters */}
       <div className="space-y-4 rounded-2xl border border-border bg-card p-4 shadow-sm md:p-6">
         <label className="block font-semibold text-foreground">Filter By Category</label>
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="h-9 w-full rounded-lg border border-input bg-transparent px-3 text-sm text-foreground shadow-xs outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:ring-ring/50 md:w-auto"
-        >
-          <option value="all">All Categories</option>
-          {LEAD_CATEGORY_OPTIONS.map(category => (
-            <option key={category} value={category}>{category}</option>
-          ))}
-        </select>
+        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <SelectTrigger className="w-full md:w-auto">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            {LEAD_CATEGORY_OPTIONS.map((category) => (
+              <SelectItem key={category} value={category}>
+                {category}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Table */}

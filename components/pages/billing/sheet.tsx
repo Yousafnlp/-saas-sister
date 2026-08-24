@@ -6,10 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import FormSelect from '@/components/form-select';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { ClientSelect, type ClientOption } from '@/components/client-select';
+import { DatePicker } from '@/components/date-picker';
 import { Plus, Trash2 } from 'lucide-react';
 import { BILLING_PAYMENT_METHOD_OPTIONS, BILLING_PAYMENT_STATUS_OPTIONS } from '@/lib/select-options';
 import { ServicePicker } from './service-picker';
 import { calcSubtotal, calcTotal, type BillFormData, type BillItem } from './types';
+
+export type { ClientOption };
 
 interface BillFormSheetProps {
   open: boolean;
@@ -19,6 +23,7 @@ interface BillFormSheetProps {
   onFormDataChange: (formData: BillFormData) => void;
   onSubmit: (e: React.FormEvent) => void;
   isSubmitting?: boolean;
+  clients: ClientOption[];
 }
 
 export function BillFormSheet({
@@ -29,11 +34,20 @@ export function BillFormSheet({
   onFormDataChange,
   onSubmit,
   isSubmitting,
+  clients,
 }: BillFormSheetProps) {
   const [showPicker, setShowPicker] = useState(false);
 
   const subtotal = calcSubtotal(formData.items);
   const total = calcTotal(formData.items, formData.discount);
+  const due = formData.paymentStatus === 'Paid' ? 0 : Math.max(total - (formData.amountPaid || 0), 0);
+
+  const handleDueChange = (rawDue: number) => {
+    const clampedDue = Math.min(Math.max(Number.isNaN(rawDue) ? 0 : rawDue, 0), total);
+    const amountPaid = Math.max(total - clampedDue, 0);
+    const paymentStatus = clampedDue <= 0 ? 'Paid' : 'Pending';
+    onFormDataChange({ ...formData, amountPaid, paymentStatus });
+  };
 
   const updateItem = (index: number, patch: Partial<BillItem>) => {
     const items = formData.items.map((item, i) => {
@@ -52,7 +66,6 @@ export function BillFormSheet({
   const addItem = (item: BillItem) => {
     onFormDataChange({ ...formData, items: [...formData.items, item] });
   };
-
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
@@ -60,35 +73,22 @@ export function BillFormSheet({
           <SheetTitle>{editingId ? 'Edit Bill' : 'New Bill'}</SheetTitle>
         </SheetHeader>
         <form onSubmit={onSubmit} className="space-y-5 px-4 pb-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Client Name</label>
-              <Input
-                type="text"
-                required
-                value={formData.clientName}
-                onChange={(e) => onFormDataChange({ ...formData, clientName: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Client Number</label>
-              <Input
-                type="tel"
-                required
-                placeholder="0300-1234567"
-                value={formData.clientNumber}
-                onChange={(e) => onFormDataChange({ ...formData, clientNumber: e.target.value })}
-              />
-            </div>
-          </div>
+          <ClientSelect
+            clients={clients}
+            name={formData.clientName}
+            number={formData.clientNumber}
+            onSelect={(client) =>
+              onFormDataChange({ ...formData, clientName: client?.name ?? '', clientNumber: client?.number ?? '' })
+            }
+            required
+          />
 
           <div>
             <label className="mb-1.5 block text-sm font-medium text-foreground">Date</label>
-            <Input
-              type="date"
+            <DatePicker
               required
               value={formData.date}
-              onChange={(e) => onFormDataChange({ ...formData, date: e.target.value })}
+              onChange={(value) => onFormDataChange({ ...formData, date: value })}
             />
           </div>
 
@@ -182,19 +182,17 @@ export function BillFormSheet({
                 placeholder="0"
               />
             </div>
-            {formData.paymentStatus !== 'Paid' && (
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-foreground">Amount Paid</label>
-                <Input
-                  type="number"
-                  min={0}
-                  max={total}
-                  value={formData.amountPaid || ''}
-                  onChange={(e) => onFormDataChange({ ...formData, amountPaid: Number(e.target.value) })}
-                  placeholder="0"
-                />
-              </div>
-            )}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">Due</label>
+              <Input
+                type="number"
+                min={0}
+                max={total}
+                value={due || ''}
+                onChange={(e) => handleDueChange(Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
           </div>
 
           <div>
@@ -219,6 +217,14 @@ export function BillFormSheet({
               <div className="mt-2 flex justify-between border-t border-border pt-2 font-semibold text-foreground">
                 <span>Total</span>
                 <span className="tabular-nums">Rs {total.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm text-success">
+                <span>Paid</span>
+                <span className="tabular-nums">Rs {(formData.amountPaid || 0).toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between text-sm text-destructive">
+                <span>Due</span>
+                <span className="tabular-nums">Rs {due.toLocaleString()}</span>
               </div>
             </div>
           </div>

@@ -23,10 +23,10 @@ const EMPLOYEES = [
 ];
 
 const CLIENTS = [
-  { name: 'John Mitchell', date: '2024-03-14', age: 34, gender: 'Male', concern: 'Acne treatment', nextVisit: '2024-04-01' },
-  { name: 'Sarah Chen', date: '2024-03-13', age: 28, gender: 'Female', concern: 'Skin brightening', nextVisit: '2024-03-27' },
-  { name: 'Michael Brown', date: '2024-03-12', age: 41, gender: 'Male', concern: 'Hair loss consultation', nextVisit: '2024-04-05' },
-  { name: 'Jessica Davis', date: '2024-03-14', age: 30, gender: 'Female', concern: 'Laser hair removal', nextVisit: '2024-03-28' },
+  { name: 'John Mitchell', number: '0300-1234567', date: '2024-03-14', age: 34, gender: 'Male', concern: 'Acne treatment', nextVisit: '2024-04-01' },
+  { name: 'Sarah Chen', number: '0301-2345678', date: '2024-03-13', age: 28, gender: 'Female', concern: 'Skin brightening', nextVisit: '2024-03-27' },
+  { name: 'Michael Brown', number: '0302-3456789', date: '2024-03-12', age: 41, gender: 'Male', concern: 'Hair loss consultation', nextVisit: '2024-04-05' },
+  { name: 'Jessica Davis', number: '0303-4567890', date: '2024-03-14', age: 30, gender: 'Female', concern: 'Laser hair removal', nextVisit: '2024-03-28' },
   { name: 'Robert Wilson', date: '2024-02-20', age: 52, gender: 'Male', concern: 'Anti-aging treatment', nextVisit: '2024-03-20' },
   { name: 'Emily Garcia', date: '2024-03-13', age: 26, gender: 'Female', concern: 'Facial consultation', nextVisit: '2024-03-30' },
 ];
@@ -39,10 +39,10 @@ const LEADS = [
 ];
 
 const EXPENSES = [
-  { date: '2024-03-14', category: 'Travel', amount: 450, description: 'Flight to client meeting', status: 'Pending', submittedBy: 'Alice Johnson' },
-  { date: '2024-03-13', category: 'Equipment', amount: 1200, description: 'Office Monitor', status: 'Approved', submittedBy: 'Bob Smith' },
-  { date: '2024-03-12', category: 'Meals', amount: 85, description: 'Team lunch', status: 'Approved', submittedBy: 'Carol White' },
-  { date: '2024-03-11', category: 'Software', amount: 299, description: 'Project Management Tool', status: 'Rejected', submittedBy: 'David Lee' },
+  { date: '2024-03-14', category: 'Travel', city: 'Lahore', amount: 450, description: 'Flight to client meeting', status: 'Pending', submittedBy: 'Alice Johnson' },
+  { date: '2024-03-13', category: 'Equipment', city: 'Islamabad', amount: 1200, description: 'Office Monitor', status: 'Approved', submittedBy: 'Bob Smith' },
+  { date: '2024-03-12', category: 'Meals', city: 'Karachi', amount: 85, description: 'Team lunch', status: 'Approved', submittedBy: 'Carol White' },
+  { date: '2024-03-11', category: 'Software', city: 'Sialkot', amount: 299, description: 'Project Management Tool', status: 'Rejected', submittedBy: 'David Lee' },
 ];
 
 async function upsertUsers() {
@@ -94,7 +94,7 @@ async function seedAppointments() {
   const appointments = [
     { number: '0300-1234567', name: 'John Mitchell', service: 'Consultation', date: '2024-03-20', time: '10:00', status: 'Scheduled', notes: '' },
     { number: '0301-2345678', name: 'Sarah Chen', service: 'Follow-up', date: '2024-03-21', time: '14:30', status: 'Confirmed', notes: 'Second session' },
-    { number: '0303-4567890', name: 'Jessica Davis', service: 'Treatment', date: '2024-03-18', time: '11:00', status: 'Completed', notes: '' },
+    { number: '0303-4567890', name: 'Jessica Davis', service: 'Procedure', date: '2024-03-18', time: '11:00', status: 'Completed', notes: '' },
   ];
 
   let created = 0;

@@ -4,26 +4,33 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import FormSelect from '@/components/form-select';
+import { DatePicker } from '@/components/date-picker';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { GENDER_OPTIONS } from '@/lib/select-options';
 
 export interface Client {
   id: string;
   name: string;
+  number: string;
   date: string;
   age: number;
   gender: string;
   concern: string;
   nextVisit: string;
+  treatmentPlan: string;
+  treatmentHistory: string;
 }
 
 export const emptyClient: Omit<Client, 'id'> = {
   name: '',
+  number: '',
   date: '',
   age: 0,
   gender: GENDER_OPTIONS[0],
   concern: '',
   nextVisit: '',
+  treatmentPlan: '',
+  treatmentHistory: '',
 };
 
 interface ClientFormSheetProps {
@@ -53,12 +60,20 @@ export function ClientFormSheet({ open, onOpenChange, editingId, formData, onFor
             />
           </div>
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-foreground">Date</label>
+            <label className="mb-1.5 block text-sm font-medium text-foreground">Number</label>
             <Input
-              type="date"
+              type="tel"
+              value={formData.number}
+              onChange={(e) => onFormDataChange({ ...formData, number: e.target.value })}
+              placeholder="0300-1234567"
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-foreground">Date</label>
+            <DatePicker
               required
               value={formData.date}
-              onChange={(e) => onFormDataChange({ ...formData, date: e.target.value })}
+              onChange={(value) => onFormDataChange({ ...formData, date: value })}
             />
           </div>
           <div>
@@ -86,10 +101,25 @@ export function ClientFormSheet({ open, onOpenChange, editingId, formData, onFor
           </div>
           <div>
             <label className="mb-1.5 block text-sm font-medium text-foreground">Next Visit</label>
-            <Input
-              type="date"
+            <DatePicker
               value={formData.nextVisit}
-              onChange={(e) => onFormDataChange({ ...formData, nextVisit: e.target.value })}
+              onChange={(value) => onFormDataChange({ ...formData, nextVisit: value })}
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-foreground">Treatment Plan</label>
+            <Textarea
+              value={formData.treatmentPlan}
+              onChange={(e) => onFormDataChange({ ...formData, treatmentPlan: e.target.value })}
+              rows={3}
+            />
+          </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-foreground">Treatment History</label>
+            <Textarea
+              value={formData.treatmentHistory}
+              onChange={(e) => onFormDataChange({ ...formData, treatmentHistory: e.target.value })}
+              rows={3}
             />
           </div>
           <div className="flex justify-end gap-3 pt-2">

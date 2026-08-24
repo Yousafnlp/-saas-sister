@@ -18,11 +18,14 @@ const GENDERS = ['Male', 'Female', 'Unknown'];
 
 const fieldRules = (optional) => [
   body('name')[optional ? 'optional' : 'exists']().trim().notEmpty().withMessage('Name is required'),
+  body('number').optional().trim(),
   body('date')[optional ? 'optional' : 'exists']().isISO8601().withMessage('date must be a valid date'),
   body('age').optional().isInt({ min: 0 }).withMessage('age must be a non-negative integer'),
   body('gender').optional().isIn(GENDERS).withMessage('Invalid gender'),
   body('concern').optional().trim(),
   body('nextVisit').optional().isISO8601().withMessage('nextVisit must be a valid date'),
+  body('treatmentPlan').optional().trim(),
+  body('treatmentHistory').optional().trim(),
 ];
 
 router.use(protect);

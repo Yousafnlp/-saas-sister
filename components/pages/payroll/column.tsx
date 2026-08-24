@@ -8,9 +8,9 @@ const statusBadge = (status: string) => (
 export const payrollColumns: DataTableColumn[] = [
   { key: 'employeeName', label: 'Employee' },
   { key: 'month', label: 'Month' },
-  { key: 'baseSalary', label: 'Base Salary', render: (v: number) => <span className="tabular-nums">${v.toLocaleString()}</span> },
-  { key: 'bonus', label: 'Bonus', render: (v: number) => <span className="tabular-nums">${v.toLocaleString()}</span> },
-  { key: 'deductions', label: 'Deductions', render: (v: number) => <span className="tabular-nums">${v.toLocaleString()}</span> },
-  { key: 'netSalary', label: 'Net Salary', render: (v: number) => <span className="tabular-nums">${v.toLocaleString()}</span> },
+  { key: 'baseSalary', label: 'Base Salary', render: (v: number) => <span className="tabular-nums">Rs {v.toLocaleString()}</span> },
+  { key: 'bonus', label: 'Bonus', render: (v: number) => <span className="tabular-nums">Rs {v.toLocaleString()}</span> },
+  { key: 'deductions', label: 'Deductions', render: (v: number) => <span className="tabular-nums">Rs {v.toLocaleString()}</span> },
+  { key: 'netSalary', label: 'Net Salary', render: (v: number) => <span className="tabular-nums">Rs {v.toLocaleString()}</span> },
   { key: 'status', label: 'Status', render: statusBadge },
 ];

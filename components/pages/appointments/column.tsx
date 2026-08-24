@@ -1,7 +1,9 @@
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { DataTableColumn } from '@/components/data-table';
-import { StatusBadge, type StatusTone } from '@/components/status-badge';
+import { type StatusTone } from '@/components/status-badge';
+import { StatusSelect } from '@/components/status-select';
+import { APPOINTMENT_STATUS_OPTIONS } from '@/lib/select-options';
 import { Trash2 } from 'lucide-react';
 import type { Appointment } from './types';
 
@@ -18,9 +20,10 @@ const formatTime = (time: string) => format(new Date(`2000-01-01T${time}`), 'h:m
 
 interface AppointmentColumnsProps {
   onDelete: (id: string) => void;
+  onStatusChange: (id: string, status: string) => void;
 }
 
-export function getAppointmentColumns({ onDelete }: AppointmentColumnsProps): DataTableColumn<Appointment>[] {
+export function getAppointmentColumns({ onDelete, onStatusChange }: AppointmentColumnsProps): DataTableColumn<Appointment>[] {
   return [
     { key: 'name', label: 'Name', cellClassName: 'font-medium text-foreground' },
     { key: 'number', label: 'Number', hideBelow: 'md' },
@@ -39,7 +42,15 @@ export function getAppointmentColumns({ onDelete }: AppointmentColumnsProps): Da
     {
       key: 'status',
       label: 'Status',
-      render: (value: string) => <StatusBadge label={value} tone={STATUS_TONE[value] || 'neutral'} />,
+      render: (value: string, appointment) => (
+        <StatusSelect
+          value={value}
+          options={APPOINTMENT_STATUS_OPTIONS}
+          toneMap={STATUS_TONE}
+          onChange={(status) => onStatusChange(appointment.id, status)}
+          aria-label={`Update status for ${appointment.name}`}
+        />
+      ),
     },
     {
       key: 'notes',

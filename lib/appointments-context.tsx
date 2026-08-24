@@ -11,6 +11,7 @@ interface AppointmentsState {
   appointments: Appointment[];
   isLoading: boolean;
   addAppointment: (data: AppointmentFormData) => Promise<void>;
+  updateAppointmentStatus: (id: string, status: string) => Promise<void>;
   removeAppointment: (id: string) => Promise<void>;
 }
 
@@ -63,13 +64,20 @@ export function AppointmentsProvider({ children }: { children: ReactNode }) {
     setAppointments((prev) => [...prev, fromApi(res.data)]);
   };
 
+  const updateAppointmentStatus = async (id: string, status: string) => {
+    const res = await api.put<AppointmentResponse>(`/appointments/${id}`, { status });
+    setAppointments((prev) => prev.map((appointment) => (appointment.id === id ? fromApi(res.data) : appointment)));
+  };
+
   const removeAppointment = async (id: string) => {
     await api.delete(`/appointments/${id}`);
     setAppointments((prev) => prev.filter((appointment) => appointment.id !== id));
   };
 
   return (
-    <AppointmentsContext.Provider value={{ appointments, isLoading, addAppointment, removeAppointment }}>
+    <AppointmentsContext.Provider
+      value={{ appointments, isLoading, addAppointment, updateAppointmentStatus, removeAppointment }}
+    >
       {children}
     </AppointmentsContext.Provider>
   );

@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X } from 'lucide-react';
 
 export interface ProcessPayrollData {
@@ -64,17 +65,17 @@ export function ProcessPayrollSheet({ open, onOpenChange, formData, onFormDataCh
 
             <div>
               <label className="block text-sm font-medium text-foreground mb-2">Payroll Month</label>
-              <select
-                value={formData.month}
-                onChange={(e) => onFormDataChange({ ...formData, month: e.target.value })}
-                className="w-full rounded-lg border border-input bg-transparent h-9 px-3 text-sm shadow-xs focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
-              >
-                <option value="">Select Month</option>
-                <option value="January 2024">January 2024</option>
-                <option value="February 2024">February 2024</option>
-                <option value="March 2024">March 2024</option>
-                <option value="April 2024">April 2024</option>
-              </select>
+              <Select value={formData.month} onValueChange={(value) => onFormDataChange({ ...formData, month: value })}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Month" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="January 2024">January 2024</SelectItem>
+                  <SelectItem value="February 2024">February 2024</SelectItem>
+                  <SelectItem value="March 2024">March 2024</SelectItem>
+                  <SelectItem value="April 2024">April 2024</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
@@ -112,19 +113,19 @@ export function ProcessPayrollSheet({ open, onOpenChange, formData, onFormDataCh
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Base Salary:</span>
-                  <span className="tabular-nums">${(formData.salary || 0).toLocaleString()}</span>
+                  <span className="tabular-nums">Rs {(formData.salary || 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Bonus:</span>
-                  <span className="tabular-nums">${(formData.bonus || 0).toLocaleString()}</span>
+                  <span className="tabular-nums">Rs {(formData.bonus || 0).toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Deductions:</span>
-                  <span className="tabular-nums">-${(formData.deductions || 0).toLocaleString()}</span>
+                  <span className="tabular-nums">-Rs {(formData.deductions || 0).toLocaleString()}</span>
                 </div>
                 <div className="border-t border-border pt-2 mt-2 flex justify-between font-semibold text-foreground">
                   <span>Net Salary:</span>
-                  <span className="tabular-nums">${((formData.salary || 0) + (formData.bonus || 0) - (formData.deductions || 0)).toLocaleString()}</span>
+                  <span className="tabular-nums">Rs {((formData.salary || 0) + (formData.bonus || 0) - (formData.deductions || 0)).toLocaleString()}</span>
                 </div>
               </div>
             </div>

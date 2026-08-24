@@ -100,9 +100,15 @@ export function Invoice({ bill }: InvoiceProps) {
 
       <div className="invoice-divider my-2 border-t border-dashed border-gray-400" />
 
-      <div className="invoice-row flex justify-between text-[10px] text-gray-600">
-        <span>{bill.paymentMethod}</span>
-        <span className="font-semibold uppercase text-gray-900">{bill.paymentStatus}</span>
+      <div className="invoice-row space-y-1 text-[10px]">
+        <div className="flex justify-between text-gray-600">
+          <span>Payment Method</span>
+          <span className="font-semibold text-gray-900">{bill.paymentMethod}</span>
+        </div>
+        <div className="flex justify-between text-gray-600">
+          <span>Status</span>
+          <span className="font-semibold uppercase text-gray-900">{bill.paymentStatus}</span>
+        </div>
       </div>
 
       {bill.notes && (
@@ -116,7 +122,6 @@ export function Invoice({ bill }: InvoiceProps) {
 
       <div className="invoice-row text-center">
         <p className="text-xs font-bold tracking-wide text-gray-900">THANK YOU FOR VISITING US</p>
-        <p className="mt-1 text-[9px] text-gray-400">{CLINIC_INFO.footerNote}</p>
       </div>
     </div>
   );

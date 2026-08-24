@@ -11,7 +11,8 @@ const statusBadge = (status: string) => (
 export const expenseColumns: DataTableColumn[] = [
   { key: 'date', label: 'Date' },
   { key: 'category', label: 'Category' },
-  { key: 'amount', label: 'Amount', render: (v: number) => <span className="tabular-nums">${v.toLocaleString()}</span> },
+  { key: 'city', label: 'City' },
+  { key: 'amount', label: 'Amount', render: (v: number) => <span className="tabular-nums">Rs {v.toLocaleString()}</span> },
   { key: 'description', label: 'Description' },
   { key: 'submittedBy', label: 'Submitted By' },
   { key: 'status', label: 'Status', render: statusBadge },

@@ -1,8 +1,7 @@
 export const CLINIC_INFO = {
   name: 'd.Aesthetics',
-  tagline: 'Medical Aesthetics & Skin Clinic',
+  tagline: 'Laser | Skin | Hair | Mind | Body | Soul',
   address: '',
   phone: '',
   email: '',
-  footerNote: 'Thank you for choosing d.Aesthetics. This is a computer-generated invoice.',
 };

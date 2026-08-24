@@ -8,6 +8,11 @@ const clientSchema = new mongoose.Schema(
       required: [true, 'Name is required'],
       trim: true,
     },
+    number: {
+      type: String,
+      trim: true,
+      default: '',
+    },
     date: {
       type: Date,
       required: [true, 'Date is required'],
@@ -28,11 +33,21 @@ const clientSchema = new mongoose.Schema(
     nextVisit: {
       type: Date,
     },
+    treatmentPlan: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    treatmentHistory: {
+      type: String,
+      trim: true,
+      default: '',
+    },
   },
   { timestamps: true }
 );
 
-clientSchema.index({ name: 'text', concern: 'text' });
+clientSchema.index({ name: 'text', concern: 'text', number: 'text' });
 clientSchema.plugin(toJSON);
 
 export default mongoose.model('Client', clientSchema);

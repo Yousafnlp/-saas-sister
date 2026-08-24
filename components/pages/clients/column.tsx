@@ -1,17 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { DataTableColumn } from '@/components/data-table';
-import { Trash2, Edit, Eye } from 'lucide-react';
+import { Trash2, Edit, Eye, Printer } from 'lucide-react';
 import type { Client } from './sheet';
 
 interface ClientColumnsProps {
   onView: (client: Client) => void;
   onEdit: (client: Client) => void;
   onDelete: (id: string) => void;
+  onViewBills: (client: Client) => void;
 }
 
-export function getClientColumns({ onView, onEdit, onDelete }: ClientColumnsProps): DataTableColumn<Client>[] {
+export function getClientColumns({
+  onView,
+  onEdit,
+  onDelete,
+  onViewBills,
+}: ClientColumnsProps): DataTableColumn<Client>[] {
   return [
     { key: 'name', label: 'Name', cellClassName: 'font-medium text-foreground' },
+    { key: 'number', label: 'Number', hideBelow: 'md' },
     { key: 'date', label: 'Date' },
     { key: 'age', label: 'Age', hideBelow: 'md' },
     { key: 'gender', label: 'Gender', hideBelow: 'md' },
@@ -38,6 +45,17 @@ export function getClientColumns({ onView, onEdit, onDelete }: ClientColumnsProp
             title={`View ${client.name}`}
           >
             <Eye className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => onViewBills(client)}
+            aria-label={`View bills for ${client.name}`}
+            title={`View bills for ${client.name}`}
+          >
+            <Printer className="size-4" />
           </Button>
           <Button
             type="button"

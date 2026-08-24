@@ -21,7 +21,7 @@ const appointmentSchema = new mongoose.Schema(
     service: {
       type: String,
       required: [true, 'Service is required'],
-      enum: ['Consultation', 'Follow-up', 'Treatment', 'Procedure'],
+      enum: ['Consultation', 'Follow-up', 'Procedure'],
     },
     date: {
       type: Date,

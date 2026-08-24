@@ -12,6 +12,11 @@ const expenseSchema = new mongoose.Schema(
       required: [true, 'Category is required'],
       enum: ['Travel', 'Meals', 'Office Supplies', 'Equipment', 'Software', 'Other'],
     },
+    city: {
+      type: String,
+      required: [true, 'City is required'],
+      enum: ['Lahore', 'Islamabad', 'Karachi', 'Sialkot'],
+    },
     amount: {
       type: Number,
       required: [true, 'Amount is required'],

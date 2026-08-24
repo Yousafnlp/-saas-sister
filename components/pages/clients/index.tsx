@@ -73,6 +73,10 @@ export default function Clients() {
     router.push(`/clients/${client.id}`);
   };
 
+  const handleViewBills = (client: Client) => {
+    router.push(`/clients/${client.id}/bills`);
+  };
+
   const handleEditClick = (client: Client) => {
     setEditingId(client.id);
     setFormData(client);
@@ -114,6 +118,7 @@ export default function Clients() {
     onView: handleViewClick,
     onEdit: handleEditClick,
     onDelete: handleDelete,
+    onViewBills: handleViewBills,
   });
 
   return (

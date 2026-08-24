@@ -105,9 +105,9 @@ export default function Payroll() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard icon={DollarSign} label="Total Payroll" value={`$${(totalSalaries / 1000).toFixed(0)}K`} tone="primary" />
+        <StatCard icon={DollarSign} label="Total Payroll" value={`Rs ${(totalSalaries / 1000).toFixed(0)}K`} tone="primary" />
         <StatCard icon={CheckCircle} label="Processed" value={processedCount} tone="success" />
-        <StatCard icon={TrendingUp} label="Total Bonus" value={`$${totalBonus.toLocaleString()}`} tone="info" />
+        <StatCard icon={TrendingUp} label="Total Bonus" value={`Rs ${totalBonus.toLocaleString()}`} tone="info" />
         <StatCard icon={Clock} label="Pending" value={pendingCount} tone="warning" />
       </div>
 

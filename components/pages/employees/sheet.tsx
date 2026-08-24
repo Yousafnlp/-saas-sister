@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import FormSelect from '@/components/form-select';
+import { DatePicker } from '@/components/date-picker';
 import { EMPLOYEE_DEPARTMENT_OPTIONS, EMPLOYEE_STATUS_OPTIONS } from '@/lib/select-options';
 import { X } from 'lucide-react';
 
@@ -109,12 +110,7 @@ export function EmployeeFormSheet({ open, onOpenChange, editingId, formData, onF
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">Join Date</label>
-            <Input
-              type="date"
-              value={formData.joinDate}
-              onChange={(e) => onFormDataChange({ ...formData, joinDate: e.target.value })}
-              className="bg-card border-border"
-            />
+            <DatePicker value={formData.joinDate} onChange={(value) => onFormDataChange({ ...formData, joinDate: value })} />
           </div>
 
           <FormSelect

@@ -19,9 +19,9 @@ import { useAppointments } from '@/lib/appointments-context';
 import { APPOINTMENT_SERVICE_OPTIONS, APPOINTMENT_STATUS_OPTIONS } from '@/lib/select-options';
 import { emptyAppointment, type AppointmentFormData } from './types';
 
-const TIME_SLOTS = Array.from({ length: 48 }, (_, i) => {
-  const hours = Math.floor(i / 2);
-  const minutes = i % 2 === 0 ? 0 : 30;
+const TIME_SLOTS = Array.from({ length: 96 }, (_, i) => {
+  const hours = Math.floor(i / 4);
+  const minutes = (i % 4) * 15;
   const value = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
   const label = format(new Date(2000, 0, 1, hours, minutes), 'h:mm a');
   return { value, label };

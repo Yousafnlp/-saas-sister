@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 export type StatusTone = 'success' | 'warning' | 'danger' | 'info' | 'neutral';
 
-const TONE_STYLES: Record<StatusTone, string> = {
+export const TONE_STYLES: Record<StatusTone, string> = {
   success: 'bg-success/10 text-success ring-success/20',
   warning: 'bg-warning/10 text-warning ring-warning/20',
   danger: 'bg-destructive/10 text-destructive ring-destructive/20',

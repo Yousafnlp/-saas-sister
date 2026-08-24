@@ -137,13 +137,13 @@ export default function Dashboard() {
         <StatCard
           icon={TrendingUp}
           label="Total Revenue"
-          value={`$${stats.totalRevenue.toLocaleString()}`}
+          value={`Rs ${stats.totalRevenue.toLocaleString()}`}
           tone="success"
         />
         <StatCard
           icon={DollarSign}
           label="Total Expenses"
-          value={`$${stats.totalExpenses.toLocaleString()}`}
+          value={`Rs ${stats.totalExpenses.toLocaleString()}`}
           tone="danger"
         />
         <StatCard

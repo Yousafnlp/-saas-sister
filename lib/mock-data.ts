@@ -91,5 +91,5 @@ export const mockClients = [
 export const mockAppointments = [
   { id: 1, leadId: 1, name: 'John Mitchell', number: '0300-1234567', service: 'Consultation', date: '2024-03-20', time: '10:00', status: 'Scheduled', notes: '' },
   { id: 2, leadId: 2, name: 'Sarah Chen', number: '0301-2345678', service: 'Follow-up', date: '2024-03-21', time: '14:30', status: 'Confirmed', notes: 'Second session' },
-  { id: 3, leadId: 4, name: 'Jessica Davis', number: '0303-4567890', service: 'Treatment', date: '2024-03-18', time: '11:00', status: 'Completed', notes: '' },
+  { id: 3, leadId: 4, name: 'Jessica Davis', number: '0303-4567890', service: 'Procedure', date: '2024-03-18', time: '11:00', status: 'Completed', notes: '' },
 ];

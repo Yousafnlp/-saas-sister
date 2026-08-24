@@ -30,10 +30,12 @@ export const EMPLOYEE_DEPARTMENT_OPTIONS = ['Doctor (DR)', 'Technician', 'Manage
 
 export const EMPLOYEE_STATUS_OPTIONS = ['Active', 'Inactive'];
 
-export const APPOINTMENT_SERVICE_OPTIONS = ['Consultation', 'Follow-up', 'Treatment', 'Procedure'];
+export const APPOINTMENT_SERVICE_OPTIONS = ['Consultation', 'Follow-up', 'Procedure'];
 
 export const APPOINTMENT_STATUS_OPTIONS = ['Scheduled', 'Confirmed', 'Completed', 'Cancelled'];
 
 export const BILLING_PAYMENT_METHOD_OPTIONS = ['Cash', 'Card', 'Bank Transfer', 'Easypaisa/JazzCash'];
 
-export const BILLING_PAYMENT_STATUS_OPTIONS = ['Paid', 'Partial', 'Pending'];
+export const BILLING_PAYMENT_STATUS_OPTIONS = ['Paid', 'Pending'];
+
+export const EXPENSE_CATEGORY_OPTIONS = ['Travel', 'Meals', 'Office Supplies', 'Equipment', 'Software', 'Other'];

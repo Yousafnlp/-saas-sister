@@ -15,7 +15,7 @@ const router = Router();
 const idParam = param('id').isMongoId().withMessage('Invalid bill id');
 
 const PAYMENT_METHODS = ['Cash', 'Card', 'Bank Transfer', 'Easypaisa/JazzCash'];
-const PAYMENT_STATUSES = ['Paid', 'Partial', 'Pending'];
+const PAYMENT_STATUSES = ['Paid', 'Pending'];
 
 const fieldRules = (optional) => [
   body('clientName')[optional ? 'optional' : 'exists']().trim().notEmpty().withMessage('Client name is required'),

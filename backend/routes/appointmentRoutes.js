@@ -14,7 +14,7 @@ const router = Router();
 
 const idParam = param('id').isMongoId().withMessage('Invalid appointment id');
 
-const SERVICES = ['Consultation', 'Follow-up', 'Treatment', 'Procedure'];
+const SERVICES = ['Consultation', 'Follow-up', 'Procedure'];
 const STATUSES = ['Scheduled', 'Confirmed', 'Completed', 'Cancelled'];
 
 const fieldRules = (optional) => [

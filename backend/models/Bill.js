@@ -80,7 +80,7 @@ const billSchema = new mongoose.Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ['Paid', 'Partial', 'Pending'],
+      enum: ['Paid', 'Pending'],
       default: 'Paid',
     },
     amountPaid: {

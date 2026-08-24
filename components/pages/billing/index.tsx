@@ -10,7 +10,7 @@ import { PageHeader } from '@/components/page-header';
 import { StatCard } from '@/components/stat-card';
 import DataTable from '@/components/data-table';
 import { Plus, Search, Receipt, CheckCircle, Clock } from 'lucide-react';
-import { BillFormSheet } from './sheet';
+import { BillFormSheet, type ClientOption } from './sheet';
 import { getBillColumns } from './column';
 import { emptyBill, type Bill, type BillFormData } from './types';
 
@@ -24,6 +24,11 @@ interface BillResponse {
   data: Bill;
 }
 
+interface ClientListResponse {
+  success: boolean;
+  data: ClientOption[];
+}
+
 function normalize(bill: Bill): Bill {
   return { ...bill, date: toDateOnly(bill.date) };
 }
@@ -35,6 +40,7 @@ function today(): string {
 export default function Billing() {
   const [searchQuery, setSearchQuery] = useState('');
   const [bills, setBills] = useState<Bill[]>([]);
+  const [clients, setClients] = useState<ClientOption[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSheet, setShowSheet] = useState(false);
@@ -55,6 +61,15 @@ export default function Billing() {
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);
+      });
+
+    api
+      .get<ClientListResponse>('/clients?limit=100')
+      .then((res) => {
+        if (!cancelled) setClients(res.data);
+      })
+      .catch(() => {
+        if (!cancelled) setClients([]);
       });
 
     return () => {
@@ -107,6 +122,16 @@ export default function Billing() {
     }
   };
 
+  const handleStatusChange = async (bill: Bill, paymentStatus: string) => {
+    try {
+      const res = await api.put<BillResponse>(`/bills/${bill.id}`, { paymentStatus });
+      setBills(bills.map((b) => (b.id === bill.id ? normalize(res.data) : b)));
+      toast.success(`Payment status updated to ${paymentStatus}`);
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : 'Failed to update payment status');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.items.length === 0) {
@@ -136,6 +161,7 @@ export default function Billing() {
   const columns = getBillColumns({
     onEdit: handleEditClick,
     onDelete: handleDelete,
+    onStatusChange: handleStatusChange,
   });
 
   return (
@@ -182,6 +208,7 @@ export default function Billing() {
         onFormDataChange={setFormData}
         onSubmit={handleSubmit}
         isSubmitting={isSubmitting}
+        clients={clients}
       />
     </div>
   );
