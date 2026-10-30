@@ -1,0 +1,143 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Same teal brand as the clinic app (apps/web), so the screenshots and the site feel like one product. */
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --surface: #f4f8f8;
+  --card: #ffffff;
+  --muted: #edf3f3;
+  --muted-foreground: #556575;
+  --primary: #005a5f;
+  --primary-hover: #00474b;
+  --primary-foreground: #ffffff;
+  --accent: #e6f2f2;
+  --accent-foreground: #04474b;
+  --border: #e2e9eb;
+  --ring: #005a5f;
+  --success: #16a34a;
+  --warning: #d97706;
+  --info: #0284c7;
+  --danger: #dc2626;
+  /* Deep teal bands (trust section, final call to action). */
+  --band: #00393c;
+  --band-foreground: #f2fbfa;
+  --band-muted: #a9cfcc;
+  /* Decorative only: never used for text. */
+  --warm: #f7c6ae;
+  --frame-shadow: 0 40px 80px -36px rgb(0 52 56 / 0.38), 0 14px 28px -14px rgb(0 52 56 / 0.16);
+}
+
+.dark {
+  --background: #0a0d16;
+  --foreground: #e5e9f4;
+  --surface: #0e131e;
+  --card: #121622;
+  --muted: #1a2033;
+  --muted-foreground: #9aa6c0;
+  --primary: #14b8a6;
+  --primary-hover: #2dd4bf;
+  --primary-foreground: #04201f;
+  --accent: #10292b;
+  --accent-foreground: #99f6e4;
+  --border: #212942;
+  --ring: #14b8a6;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --info: #38bdf8;
+  --danger: #f87171;
+  --band: #0c2427;
+  --band-foreground: #e5f4f2;
+  --band-muted: #8fb9b5;
+  --warm: #5b3a2c;
+  --frame-shadow: 0 40px 80px -36px rgb(0 0 0 / 0.7), 0 14px 28px -14px rgb(0 0 0 / 0.5);
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument), ui-serif, Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-danger: var(--danger);
+  --color-band: var(--band);
+  --color-band-foreground: var(--band-foreground);
+  --color-band-muted: var(--band-muted);
+  --color-warm: var(--warm);
+  --shadow-frame: var(--frame-shadow);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+  /* Anchor targets clear the sticky header. */
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
