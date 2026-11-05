@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Sidebar, { canOpen, menuItemFor } from '@/components/sidebar';
+import Sidebar, { canOpen, homePathFor, menuItemFor } from '@/components/sidebar';
 import Topbar from '@/components/topbar';
 import { useAuth } from '@/lib/auth-context';
 import { EmptyState } from '@/components/empty-state';
@@ -21,6 +21,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     }
   }, [isLoading, isAuthenticated, router]);
 
+  // Sign-in and invites always land on /dashboard; send anyone who can't open it to their first allowed page.
+  const page = menuItemFor(pathname);
+  const isAllowed = !page || canOpen(page, userRole, can);
+  const redirectTo =
+    isAuthenticated && page?.href === '/dashboard' && !isAllowed ? homePathFor(userRole, can) : null;
+
+  useEffect(() => {
+    if (redirectTo) router.replace(redirectTo);
+  }, [redirectTo, router]);
+
   useEffect(() => {
     if (!isAuthenticated) return;
     const timer = setTimeout(() => setShowWelcome(false), 1400);
@@ -35,9 +45,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   if (isLoading || !isAuthenticated) {
     return null;
   }
-
-  const page = menuItemFor(pathname);
-  const isAllowed = !page || canOpen(page, userRole, can);
 
   if (showWelcome) {
     return (
@@ -71,7 +78,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           onLogout={handleLogout}
         />
         <main className="flex-1 overflow-y-auto">
-          {isAllowed ? (
+          {redirectTo ? null : isAllowed ? (
             children
           ) : (
             <div className="p-3">

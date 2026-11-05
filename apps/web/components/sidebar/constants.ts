@@ -24,7 +24,7 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  { href: '/dashboard', label: 'Dashboard', icon: Home },
+  { href: '/dashboard', label: 'Dashboard', icon: Home, adminOnly: true },
   { href: '/crm-leads', label: 'CRM Leads', icon: Briefcase, permission: 'leads' },
   { href: '/appointments', label: 'Appointments', icon: CalendarClock, permission: 'appointments' },
   { href: '/clients', label: 'Clients', icon: UserRound, permission: 'clients' },
@@ -41,6 +41,11 @@ export const menuItems: MenuItem[] = [
 export function canOpen(item: MenuItem, userRole: string | null | undefined, can: (permission: Permission) => boolean) {
   if (item.adminOnly) return userRole === ADMIN_ROLE;
   return !item.permission || can(item.permission);
+}
+
+/** The first page this user can open: where they land after signing in. */
+export function homePathFor(userRole: string | null | undefined, can: (permission: Permission) => boolean) {
+  return menuItems.find((item) => canOpen(item, userRole, can))?.href ?? null;
 }
 
 /** The menu entry a path belongs to, e.g. /clients/123 belongs to Clients. */

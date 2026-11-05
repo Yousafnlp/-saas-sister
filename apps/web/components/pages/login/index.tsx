@@ -156,16 +156,6 @@ export default function Login({ onLogin }: LoginProps) {
                 {isSubmitting ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
-
-            {/* Demo Credentials */}
-            <div className="mt-6 rounded-xl border border-border bg-muted/50 p-4">
-              <p className="mb-2 text-xs font-semibold text-foreground">Demo Credentials</p>
-              <div className="space-y-1 text-xs text-muted-foreground">
-                <p><span className="font-medium text-foreground">Admin:</span> admin@daesthetics.com / admin123</p>
-                <p><span className="font-medium text-foreground">Manager:</span> manager@daesthetics.com / manager123</p>
-                <p><span className="font-medium text-foreground">Staff:</span> staff@daesthetics.com / staff123</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

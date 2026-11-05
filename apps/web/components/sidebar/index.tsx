@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth-context';
 import { canOpen, menuItems } from './constants';
 
-export { menuItems, canOpen, menuItemFor } from './constants';
+export { menuItems, canOpen, menuItemFor, homePathFor } from './constants';
 export type { MenuItem } from './constants';
 
 const COLLAPSED_KEY = 'sidebar-collapsed';

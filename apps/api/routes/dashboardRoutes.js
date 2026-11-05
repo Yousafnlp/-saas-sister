@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { getDashboard } from '../controllers/dashboardController.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect, authorize } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.get('/', protect, getDashboard);
+// Clinic-wide figures (revenue, payroll, expenses) are for Admins only.
+router.get('/', protect, authorize('Admin'), getDashboard);
 
 export default router;
