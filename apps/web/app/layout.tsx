@@ -20,9 +20,9 @@ const fontMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'd.Aesthetics - Clinic Manager',
+  title: 'd.Aesthetics Management',
   description: 'Appointments, clients, billing and team management for your clinic.',
-  applicationName: 'd.Aesthetics',
+  applicationName: 'd.Aesthetics Management',
   appleWebApp: {
     capable: true,
     title: 'd.Aesthetics',

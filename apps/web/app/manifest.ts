@@ -3,7 +3,7 @@ import type { MetadataRoute } from 'next'
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: '/',
-    name: 'd.Aesthetics Clinic Manager',
+    name: 'd.Aesthetics Management',
     short_name: 'd.Aesthetics',
     description: 'Appointments, clients, billing and team management for your clinic.',
     start_url: '/',

@@ -79,31 +79,32 @@ export default function Login({ onLogin }: LoginProps) {
       </div>
 
       {/* Right column — login form */}
-      <div className="flex w-full lg:w-1/2 items-center justify-center p-4 sm:p-8">
-        <div className="w-full max-w-md">
+      <div className="flex w-full lg:w-1/2 flex-col justify-center px-6 pt-[max(3rem,env(safe-area-inset-top))] pb-[max(2rem,env(safe-area-inset-bottom))] sm:items-center sm:p-8">
+        <div className="w-full sm:max-w-md">
           {/* Brand mark — mobile/tablet only */}
-          <div className="mb-8 flex flex-col items-center text-center lg:hidden">
-            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary">
-              <Sparkles className="h-6 w-6 text-primary-foreground" />
+          <div className="mb-12 flex flex-col items-center text-center lg:hidden">
+            <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary">
+              <Sparkles className="h-7 w-7 text-primary-foreground" />
             </div>
-            <h1 className="text-2xl font-bold text-foreground">D.Aesthetics HRM</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Human Resource Management System</p>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">D.Aesthetics HRM</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Human Resource Management System</p>
           </div>
 
-          <div className="rounded-2xl border border-border bg-card p-8">
+          {/* Card styling only from sm+; plain and edge-to-edge on phones */}
+          <div className="sm:rounded-2xl sm:border sm:border-border sm:bg-card sm:p-8">
             <div className="mb-6 hidden lg:block">
               <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
               <p className="mt-1 text-sm text-muted-foreground">
                 Sign in to your account to continue
               </p>
             </div>
-            <div className="mb-6 lg:hidden">
-              <h1 className="text-lg font-semibold text-foreground">Sign in</h1>
-              <p className="mt-1 text-sm text-muted-foreground">Enter your credentials to continue</p>
+            <div className="mb-8 lg:hidden">
+              <h2 className="text-xl font-semibold text-foreground">Welcome back</h2>
+              <p className="mt-1.5 text-sm text-muted-foreground">Sign in to continue</p>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
               <div>
                 <label className="mb-2 block text-sm font-medium text-foreground">Email Address</label>
@@ -111,10 +112,13 @@ export default function Login({ onLogin }: LoginProps) {
                   <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    autoCapitalize="none"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email"
-                    className="h-11 pl-10"
+                    className="h-12 pl-10 text-base md:text-sm"
                   />
                 </div>
               </div>
@@ -126,15 +130,16 @@ export default function Login({ onLogin }: LoginProps) {
                   <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
                     type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="h-11 pl-10 pr-10"
+                    className="h-12 pl-10 pr-11 text-base md:text-sm"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
+                    className="absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                     tabIndex={-1}
                   >
@@ -152,7 +157,7 @@ export default function Login({ onLogin }: LoginProps) {
               )}
 
               {/* Submit */}
-              <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+              <Button type="submit" className="mt-2 h-12 w-full text-base md:text-sm" size="lg" disabled={isSubmitting}>
                 {isSubmitting ? 'Signing in...' : 'Sign In'}
               </Button>
             </form>
