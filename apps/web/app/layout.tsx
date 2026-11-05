@@ -1,10 +1,11 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { AuthProvider } from '@/lib/auth-context'
 import { AppointmentsProvider } from '@/lib/appointments-context'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
+import { PwaRegister } from '@/components/pwa-register'
 import './globals.css'
 
 const fontSans = Plus_Jakarta_Sans({
@@ -19,26 +20,32 @@ const fontMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'HR Manager Pro - HR & Operations Dashboard',
-  description: 'Complete HR and Operations Management Software with employee management, client management, payroll, and comprehensive reporting.',
-  generator: 'v0.app',
+  title: 'd.Aesthetics - Clinic Manager',
+  description: 'Appointments, clients, billing and team management for your clinic.',
+  applicationName: 'd.Aesthetics',
+  appleWebApp: {
+    capable: true,
+    title: 'd.Aesthetics',
+    statusBarStyle: 'default',
+  },
+  formatDetection: { telephone: false },
   icons: {
     icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
+      { url: '/icons/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
     ],
     apple: '/apple-icon.png',
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#005a5f' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0d16' },
+  ],
 }
 
 export default function RootLayout({
@@ -65,6 +72,7 @@ export default function RootLayout({
         </ThemeProvider>
         <Toaster />
         <Analytics />
+        <PwaRegister />
       </body>
     </html>
   )
