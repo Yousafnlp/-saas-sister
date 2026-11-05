@@ -1,0 +1,8 @@
+# Netlify config for the clinic dashboard (apps/web).
+# In the Netlify UI set Base directory = apps/web; this file is read from there.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
